@@ -1,0 +1,33 @@
+#### Purpose
+
+For Stackoverflow post investigating behavior of loops that cross cache lines
+
+#### Files
+- cache_cross.S
+    - GNU assembly for testing
+- nops.h
+    - `#define` for different number of `nop` paddings
+- Makefile
+    - Build script
+- runall.py
+    - Runs all configs and outputs results as csv to stdout
+
+#### Build/Run
+
+```
+$> make
+$> ./cache_cross
+```
+
+#### Perf Command
+```
+perf stat --all-user -x, -e cycles,cpu/event=0xa8,umask=0x01,name=lsd_uops/,cpu/event=0x79,umask=0x08,name=dsb_uops/,cpu/event=0x79,umask=0x04,name=mite_uops/
+```
+
+#### Build/Run all
+
+```
+# Will output CSV to stdout and run each config 5 times
+# If you don't need sudo for perf stat you can skip the sudo
+$> sudo python3 runall.py
+```
